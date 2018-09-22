@@ -98,7 +98,11 @@ static base::mac::ScopedObjCClassSwizzler* g_swizzle_imk_input_session;
 - (BOOL)application:(NSApplication*)sender
     continueUserActivity:(NSUserActivity*)userActivity
       restorationHandler:
+#ifdef MAC_OS_X_VERSION_10_14
           (void (^)(NSArray<id<NSUserActivityRestoring>>* restorableObjects))
+#else
+          (void (^)(NSArray* restorableObjects))
+#endif
               restorationHandler API_AVAILABLE(macosx(10.10)) {
   std::string activity_type(base::SysNSStringToUTF8(userActivity.activityType));
   std::unique_ptr<base::DictionaryValue> user_info =
